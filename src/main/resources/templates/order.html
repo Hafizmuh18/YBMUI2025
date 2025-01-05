@@ -135,6 +135,63 @@
             background-color: #0077be; /* Warna biru lebih gelap */
             color: white; /* Warna teks putih */
         }
+
+        /* Modal background */
+        .modal {
+            display: none; /* Sembunyikan modal secara default */
+            position: fixed;
+            z-index: 1; /* Di atas konten lainnya */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4); /* Latar belakang semi-transparan */
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            position: relative;
+        }
+
+        /* Tombol close */
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Modal content */
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto; /* Adjusts the modal position */
+            padding: 40px; /* Adds more padding around the content */
+            border: 1px solid #888;
+            width: 500px; /* Increased width */
+            position: relative;
+        }
+
+        /* QR image inside modal */
+        .modal-content img {
+            max-width: 100%; /* Makes the image responsive */
+            height: auto;
+        }
+
     </style>
 </head>
 
@@ -179,12 +236,10 @@
                     <div class="mb-3">
                         <label for="jenisOrder" class="form-label">Jenis Order:</label>
                         <select id="jenisOrder" class="form-select" th:field="*{jenisOrder}" required>
-                            <option value="to-seminar" data-price="Rp 55.000">TO & Seminar</option>
-                            <option value="to" data-price="Rp 35.000">TO</option>
-                            <option value="seminar" data-price="Rp 25.000">Seminar</option>
-                            <option value="bundle to-seminar" data-price="Rp 100.000">Bundle TO & Seminar</option>
-                            <option value="bundle to" data-price="Rp 60.000">Bundle TO</option>
-                            <option value="bundle seminar" data-price="Rp 40.000">Bundle Seminar</option>
+                            <option value="to-seminar" data-price="Rp 45.000">Bundle TO & Seminar</option>
+                            <option value="to" data-price="Rp 20.000">TO</option>
+                            <option value="seminar" data-price="Rp 30.000">Seminar</option>
+                            <option value="bundle to-seminar" data-price="Rp 80.000">Bundle 2 Orang TO & Seminar</option>
                         </select>
                         <div class="invalid-feedback">Silakan pilih jenis order.</div>
                     </div>
@@ -246,6 +301,37 @@
                     <div class="mb-3 d-none" id="noHp2Container">
                         <label for="noHp2" class="form-label">No HP 2:</label>
                         <input type="text" id="noHp2" class="form-control" th:field="*{noHp2}" />
+                    </div>
+
+                    <!-- Opsi Menampilkan Gambar QR Pembayaran -->
+                    <div class="mb-3">
+                        <label for="qrisImage" class="form-label">QR Pembayaran:</label>
+                        <p style="color: white;">Anda dapat melihat QR Pembayaran dengan mengklik link di bawah ini:</p>
+                        <!-- Replaced button with anchor tag -->
+                        <a href="javascript:void(0);" id="showQR" class="btn btn-primary">Tampilkan QR Pembayaran</a>
+                    </div>
+
+                    <!-- Modal untuk Menampilkan QR Pembayaran -->
+                    <div id="qrisModal" class="modal" style="display: none;">
+                        <div class="modal-content">
+                            <span class="close-btn" id="closeModal">&times;</span>
+                            <!-- Increased size of QR image -->
+                            <img src="/file/qris_qr.jpg" alt="QR Pembayaran" class="img-fluid" style="max-width: 500px; max-height: 500px;"/>
+                        </div>
+                    </div>
+
+
+                    <!-- Opsi Download Gambar QR -->
+                    <div class="mb-3">
+                        <label for="downloadQR" class="form-label">Unduh QR Pembayaran:</label>
+                        <a href="/file/qris_qr.jpg" download="qris_qr.jpg" class="btn btn-success">Unduh QR Pembayaran</a>
+                    </div>
+
+                    <!-- Opsi Pembayaran VA Blu by BCA -->
+                    <div class="mb-3">
+                        <label for="vaBluBCA" class="form-label">Opsi Pembayaran VA Blu by BCA:</label>
+                        <p style="color: white;"><span style="color: white;"><strong>Nomor VA:</strong></span> 000476151503</p>
+                        <p style="color: white;"><span style="color: white;"><strong>Nama:</strong></span> Nayang Nurizah Cendra</p>
                     </div>
 
                     <!-- Bukti -->
@@ -418,6 +504,23 @@
                 return true; // Allow form submission
             }
         }
+
+        // Show QR code modal when the link is clicked
+        document.getElementById('showQR').onclick = function() {
+            document.getElementById('qrisModal').style.display = 'block';
+        };
+
+        // Close the modal when the close button is clicked
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('qrisModal').style.display = 'none';
+        };
+
+        // Close the modal if the user clicks outside of the modal content
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('qrisModal')) {
+                document.getElementById('qrisModal').style.display = 'none';
+            }
+        };
     </script>    
 </body>
 </html>
