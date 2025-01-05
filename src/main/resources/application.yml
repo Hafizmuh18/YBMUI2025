@@ -1,0 +1,49 @@
+spring:
+  config:
+      import: optional:file:.env[.properties]
+      
+  application:
+    name: formakara
+
+  web:
+    resources:
+      add-mappings: true
+      static-locations: classpath:/static/
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+        debug: true
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    properties:
+      sslmode: require
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update  # Recommended for production
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB

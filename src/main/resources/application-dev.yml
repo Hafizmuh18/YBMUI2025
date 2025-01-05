@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: formakara
+  spring:
+  datasource:
+    url: jdbc:postgresql://ep-white-violet-a1yaadxq.ap-southeast-1.aws.neon.tech/neondb
+    username: neondb_owner
+    password: hWIP6Lwzuqf0
+    properties:
+      sslmode: require

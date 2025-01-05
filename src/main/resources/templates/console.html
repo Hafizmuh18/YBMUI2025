@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Console - All Orders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #011f4b;
+            color: white;
+            font-family: Arial, sans-serif;
+            background-image: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #00d9ff;
+        }
+        .card {
+            margin-bottom: 20px;
+            background-color: rgba(0, 38, 77, 0.9);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background-color: rgba(0, 95, 139, 0.9);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            border-radius: 12px 12px 0 0;
+        }
+        .card-body {
+            color: #e0f7ff;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #00d9ff;
+        }
+        .two-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        .column {
+            flex: 1;
+        }
+        .search-bar {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .search-bar input {
+            width: calc(100% - 120px);
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Admin Console - All Orders</h1>
+
+        <!-- Filter Status Pembayaran -->
+        <div class="d-flex justify-content-center my-4">
+            <select id="statusFilter" class="form-select w-50" onchange="filterByStatus()">
+                <option value="Menunggu Konfirmasi Pembayaran dari Panitia">Menunggu Konfirmasi</option>
+                <option value="all">Semua Status</option>
+                <option value="Pembayaran berhasil di konfirmasi">Selesai Konfirmasi</option>
+            </select>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search by Name, Email, or No HP" oninput="filterOrders()">
+            <button class="btn btn-primary mt-2" onclick="filterOrders()">Search</button>
+        </div>
+
+        <!-- Orders Loop -->
+        <div th:each="order : ${listOrder}" class="order-card">
+            <div class="card order-card-status">
+                <div class="card-header">
+                    Order ID: <span th:text="${order.id}"></span> | Type: <span th:text="${order.jenisOrder}"></span>
+                </div>
+                <div class="card-body">
+                    <p><strong>Offline Order:</strong> <span th:text="${order.offlineOrder ? 'Yes' : 'No'}"></span></p>
+                    <p><strong>Status Pembayaran:</strong> <span th:text="${order.statusPembayaran}"></span></p>
+                    <p><strong>Nominal:</strong> <span th:text="${order.nominal}"></span></p>
+
+                    <!-- Payment Proof -->
+                    <div th:if="${order.buktiBase64 != null}">
+                        <h5>Bukti Pembayaran</h5>
+                        <img th:src="'data:image/png;base64,' + ${order.buktiBase64}" alt="Bukti Pembayaran"
+                             style="max-width: 300px; display: block; margin-bottom: 10px;">
+                        <a th:href="'data:application/octet-stream;base64,' + ${order.buktiBase64}" download="bukti-pembayaran.png"
+                           class="btn btn-primary btn-sm">Download Bukti Pembayaran</a>
+                    </div>
+
+                    <!-- Tambahkan Button untuk Konfirmasi -->
+                    <div th:if="${order.statusPembayaran == 'Menunggu Konfirmasi Pembayaran dari Panitia'}" class="mt-3">
+                        <a th:href="@{/order/confirm/{idOrder}(idOrder=${order.id})}" class="btn btn-warning">
+                            Konfirmasi Pembayaran
+                        </a>
+                    </div>
+
+                    <!-- Buyer Details -->
+                    <div th:if="${order.buyer1 != null}">
+                        <h5>Buyer 1</h5>
+                        <div class="two-columns">
+                            <div class="column">
+                                <p><strong>Nama:</strong> <span th:text="${order.buyer1.nama}"></span></p>
+                                <p><strong>Asal Sekolah:</strong> <span th:text="${order.buyer1.asalSekolah}"></span></p>
+                            </div>
+                            <div class="column">
+                                <p><strong>No HP:</strong> <span th:text="${order.buyer1.noHp}"></span></p>
+                                <p><strong>Email:</strong> <span th:text="${order.buyer1.email}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${order.buyer2 != null}">
+                        <h5>Buyer 2</h5>
+                        <div class="two-columns">
+                            <div class="column">
+                                <p><strong>Nama:</strong> <span th:text="${order.buyer2.nama}"></span></p>
+                                <p><strong>Asal Sekolah:</strong> <span th:text="${order.buyer2.asalSekolah}"></span></p>
+                            </div>
+                            <div class="column">
+                                <p><strong>No HP:</strong> <span th:text="${order.buyer2.noHp}"></span></p>
+                                <p><strong>Email:</strong> <span th:text="${order.buyer2.email}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Details -->
+                    <div th:if="${order.tiketSeminar1 != null}">
+                        <h5>Tiket Seminar 1</h5>
+                        <div class="two-columns">
+                            <div class="column">
+                                <p><strong>Nama:</strong> <span th:text="${order.tiketSeminar1.nama}"></span></p>
+                                <p><strong>Asal Sekolah:</strong> <span th:text="${order.tiketSeminar1.asalSekolah}"></span></p>
+                            </div>
+                            <div class="column">
+                                <p><strong>Status:</strong> <span th:text="${order.tiketSeminar1.status}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${order.tiketTo1 != null}">
+                        <h5>Tiket To 1</h5>
+                        <div class="two-columns">
+                            <div class="column">
+                                <p><strong>Nama:</strong> <span th:text="${order.tiketTo1.nama}"></span></p>
+                                <p><strong>Asal Sekolah:</strong> <span th:text="${order.tiketTo1.asalSekolah}"></span></p>
+                            </div>
+                            <div class="column">
+                                <p><strong>Status:</strong> <span th:text="${order.tiketTo1.status}"></span></p>
+                                <p><strong>Username:</strong> <span th:text="${order.tiketTo1.username}"></span></p>
+                                <p><strong>Password:</strong> <span th:text="${order.tiketTo1.password}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Details -->
+                    <div th:if="${order.tiketSeminar2 != null}">
+                        <h5>Tiket Seminar 2</h5>
+                        <div class="two-columns">
+                            <div class="column">
+                                <p><strong>Nama:</strong> <span th:text="${order.tiketSeminar2.nama}"></span></p>
+                                <p><strong>Asal Sekolah:</strong> <span th:text="${order.tiketSeminar2.asalSekolah}"></span></p>
+                            </div>
+                            <div class="column">
+                                <p><strong>Status:</strong> <span th:text="${order.tiketSeminar2.status}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${order.tiketTo2 != null}">
+                        <h5>Tiket To 2</h5>
+                        <div class="two-columns">
+                            <div class="column">
+                                <p><strong>Nama:</strong> <span th:text="${order.tiketTo2.nama}"></span></p>
+                                <p><strong>Asal Sekolah:</strong> <span th:text="${order.tiketTo2.asalSekolah}"></span></p>
+                            </div>
+                            <div class="column">
+                                <p><strong>Status:</strong> <span th:text="${order.tiketTo2.status}"></span></p>
+                                <p><strong>Username:</strong> <span th:text="${order.tiketTo2.username}"></span></p>
+                                <p><strong>Password:</strong> <span th:text="${order.tiketTo2.password}"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>All rights reserved - PT Anawheels</p>
+        </footer>
+    </div>
+
+    <script>
+        // Function to filter orders by status
+        function filterByStatus() {
+            var status = document.getElementById('statusFilter').value;
+            var orders = document.getElementsByClassName('order-card');
+
+            for (var i = 0; i < orders.length; i++) {
+                var orderStatus = orders[i].querySelector('.order-card-status').innerText;
+
+                if (status === 'all' || orderStatus.includes(status)) {
+                    orders[i].style.display = 'block';
+                } else {
+                    orders[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Function to filter orders by search input
+        function filterOrders() {
+            var input = document.getElementById('searchInput').value.toLowerCase();
+            var orderCards = document.getElementsByClassName('order-card');
+
+            for (var i = 0; i < orderCards.length; i++) {
+                var orderCard = orderCards[i];
+                var text = orderCard.innerText.toLowerCase();
+
+                if (text.includes(input)) {
+                    orderCard.style.display = '';
+                } else {
+                    orderCard.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

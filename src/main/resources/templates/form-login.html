@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Merienda:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #011f4b;
+            font-family: 'Merienda', serif;
+            color: #ffffff;
+            background-image: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+        }
+
+        h1 {
+            font-family: "Rubik Bubbles", serif;
+            font-weight: 400;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            background-color: rgba(0, 38, 77, 0.9);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/mnt/data/image.png') center/cover no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        label {
+            font-weight: bold;
+            color: #00d9ff;
+        }
+
+        .btn-submit {
+            background-color: #0077be;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #005f8b;
+        }
+
+        .form-control {
+            border: 1px solid #005f8b;
+            border-radius: 8px;
+            background-color: #e0f7ff;
+            color: #005f8b;
+        }
+
+        .card-header {
+            background-color: rgba(0, 95, 139, 0.9);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #00d9ff;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Cek Your Tiket Here!</h1>
+        <div class="card">
+            <div class="card-header">
+                Tiket Info
+            </div>
+            <div class="card-body">
+                <form th:action="@{/login}" th:object="${loginDTO}" method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email/No Hp:</label>
+                        <input type="email" id="email" name="email" class="form-control" th:field="*{email}" required />
+                        <div class="invalid-feedback">Email wajib diisi.</div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-submit px-4">Check My Tiket</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <p>Belum punya tiket ? <a href="/" style="color: #00d9ff; text-decoration: underline;">Beli tiket di sini</a></p>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Create Order</title>
+    <!-- Bootstrap CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Merienda:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap JS dan dependensi -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #011f4b; /* Deep ocean blue */
+            font-family: 'Merienda', serif;
+            color: #ffffff;
+            background-image: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png'); /* Adds subtle texture */
+        }
+
+        h1 {
+            font-family: "Rubik Bubbles", serif;
+            font-weight: 400;
+            color: #ffffff; /* White */
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .card {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            background-color: rgba(0, 38, 77, 0.9); /* Semi-transparent ocean blue */
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/mnt/data/image.png') center/cover no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        label {
+            font-weight: bold;
+            color: #00d9ff; /* Lighter aqua */
+        }
+
+        .btn-submit {
+            background-color: #0077be; /* Medium ocean blue */
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #005f8b; /* Darker blue on hover */
+        }
+
+        .form-control {
+            border: 1px solid #005f8b; /* Darker blue */
+            border-radius: 8px;
+            background-color: #e0f7ff; /* Light aqua background */
+            color: #005f8b;
+        }
+
+        .card-header {
+            background-color: rgba(0, 95, 139, 0.9); /* Semi-transparent deep blue */
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+        }
+
+        select.form-select {
+            background-color: #e0f7ff; /* Matches input fields */
+        }
+
+        .invalid-feedback {
+            color: #ff4d4d; /* Bright coral for errors */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #00d9ff;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .card-header {
+                font-size: 16px;
+            }
+
+            .btn-submit {
+                font-size: 14px;
+            }
+        }
+
+        /* Navbar Style */
+        .navbar {
+            backdrop-filter: blur(8px); /* Menambahkan efek blur */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.1); /* Efek zoom pada hover */
+        }
+
+        .btn-light {
+            color: #0077be; /* Warna teks */
+            background-color: #e0f7ff; /* Warna biru muda */
+            border: 2px solid #0077be;
+        }
+
+        .btn-light:hover {
+            background-color: #0077be; /* Warna biru lebih gelap */
+            color: white; /* Warna teks putih */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg" style="background-color: rgba(135, 206, 250, 0.85);">
+        <div class="container-fluid">
+            <!-- Logo di pojok kiri -->
+            <a class="navbar-brand" href="#">
+                <img src="https://media.licdn.com/dms/image/v2/C560BAQEjNXwPUTNQUA/company-logo_200_200/company-logo_200_200/0/1630644235787?e=2147483647&v=beta&t=cOC2m5mQk84FjotRFMkP_gSfvXCjwhoZUrAqraw7MMA" alt="Logo" style="width: 90px; height: auto; border-radius: 8px;">
+            </a>
+            
+            <!-- Tombol toggle untuk mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menu navbar -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="btn btn-light px-4 py-2" href="/login" role="button"
+                            style="font-weight: bold; border-radius: 8px; transition: background-color 0.3s ease;">
+                            Cek Tiket Saya
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mt-5">
+        <h1>As Vast as the Sea, Dream Big</h1>
+        <div class="card">
+            <div class="card-header">
+                Create Order
+            </div>
+            <div class="card-body">
+                <form th:action="@{/order}" th:object="${orderDTO}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate onsubmit="return validateForm(event)">                    <!-- Jenis Order -->
+                    <div class="mb-3">
+                        <label for="jenisOrder" class="form-label">Jenis Order:</label>
+                        <select id="jenisOrder" class="form-select" th:field="*{jenisOrder}" required>
+                            <option value="to-seminar" data-price="Rp 55.000">TO & Seminar</option>
+                            <option value="to" data-price="Rp 35.000">TO</option>
+                            <option value="seminar" data-price="Rp 25.000">Seminar</option>
+                            <option value="bundle to-seminar" data-price="Rp 100.000">Bundle TO & Seminar</option>
+                            <option value="bundle to" data-price="Rp 60.000">Bundle TO</option>
+                            <option value="bundle seminar" data-price="Rp 40.000">Bundle Seminar</option>
+                        </select>
+                        <div class="invalid-feedback">Silakan pilih jenis order.</div>
+                    </div>
+
+                    <!-- Nominal -->
+                    <div class="mb-3">
+                        <label for="nominal" class="form-label">Nominal:</label>
+                        <input type="text" id="nominal" class="form-control" th:field="*{nominal}" required readonly />
+                        <div class="invalid-feedback">Nominal wajib diisi.</div>
+                    </div>
+
+                    <!-- Nama 1 -->
+                    <div class="mb-3">
+                        <label for="nama1" class="form-label">Nama:</label>
+                        <input type="text" id="nama1" class="form-control" th:field="*{nama1}" required />
+                        <div class="invalid-feedback">Nama 1 wajib diisi.</div>
+                    </div>
+
+                    <!-- Nama 2 (conditional) -->
+                    <div class="mb-3 d-none" id="nama2Container">
+                        <label for="nama2" class="form-label">Nama 2:</label>
+                        <input type="text" id="nama2" class="form-control" th:field="*{nama2}" />
+                    </div>
+
+                    <!-- Email 1 -->
+                    <div class="mb-3">
+                        <label for="email1" class="form-label">Email:</label>
+                        <input type="email" id="email1" class="form-control" th:field="*{email1}" required />
+                        <div class="invalid-feedback">Email 1 wajib diisi.</div>
+                    </div>
+
+                    <!-- Email 2 (conditional) -->
+                    <div class="mb-3 d-none" id="email2Container">
+                        <label for="email2" class="form-label">Email 2:</label>
+                        <input type="email" id="email2" class="form-control" th:field="*{email2}" />
+                    </div>
+
+                    <!-- Asal Sekolah 1 -->
+                    <div class="mb-3">
+                        <label for="asalsekolah1" class="form-label">Asal Sekolah:</label>
+                        <input type="text" id="asalsekolah1" class="form-control" th:field="*{asalSekolah1}" required />
+                        <div class="invalid-feedback">Asal sekolah wajib diisi.</div>
+                    </div>
+
+                    <!-- Asal Sekolah 2 -->
+                    <div class="mb-3 d-none" id="asalSekolah2Container">
+                        <label for="asalSekolah2" class="form-label">Asal Sekolah 2:</label>
+                        <input type="text" id="asalSekolah2" class="form-control" th:field="*{asalSekolah2}" />
+                    </div>
+
+                    <!-- No HP 1 -->
+                    <div class="mb-3">
+                        <label for="noHp1" class="form-label">No HP:</label>
+                        <input type="text" id="noHp1" class="form-control" th:field="*{noHp1}" required />
+                        <div class="invalid-feedback">No HP 1 wajib diisi.</div>
+                    </div>
+
+                    <!-- No HP 2 (conditional) -->
+                    <div class="mb-3 d-none" id="noHp2Container">
+                        <label for="noHp2" class="form-label">No HP 2:</label>
+                        <input type="text" id="noHp2" class="form-control" th:field="*{noHp2}" />
+                    </div>
+
+                    <!-- Bukti -->
+                    <div class="mb-3">
+                        <label for="bukti" class="form-label">Upload Bukti (Jika beli cash, upload foto pemberian uang) (maks 10Mb):</label>
+                        <input type="file" id="bukti" class="form-control" th:field="*{bukti}" />
+                    </div>
+                    
+                    <!-- Terms and Agreement -->
+                    <div class="form-check mb-3">
+                        <input type="checkbox" id="termsCheckbox" class="form-check-input" required />
+                        <label for="termsCheckbox" class="form-check-label">
+                            I agree to the 
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Agreement</a>
+                        </label>
+                        <div class="invalid-feedback" id="termsError">You must agree to the terms and agreement.</div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-submit w-100">Submit Order</button>
+                    </div>
+                    <a class="btn btn-light px-4 py-2" href="/login" role="button"
+                        style="font-weight: bold; border-radius: 8px; transition: background-color 0.3s ease;">
+                        Sudah memiliki tiket :)
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel" style="color: black;font-family: Arial, Helvetica, sans-serif;">Terms and Agreement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: black;font-family: Arial, Helvetica, sans-serif;">
+                    <h6>Terms and Conditions</h6>
+                    <p>Welcome to Formakara UI - YBM2025!</p>
+                    <p>These Terms and Conditions ("Terms") govern your use of our website and the transactions conducted through it for the purpose of purchasing tickets for the seminar and try-out event, YBM2025. By accessing or using this website, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, please do not use this website.</p>
+                    
+                    <h6>1. General Information</h6>
+                    <ul>
+                        <li>Organizer: Formakara UI</li>
+                        <li>Event: YBM2025</li>
+                        <li>Purpose of the Website: Facilitating ticket sales for seminars and try-out events organized by Formakara UI.</li>
+                        <li>Event Details: Detailed information regarding the date, time, location, and other specifics of YBM2025 will be provided on the website and may be updated periodically.</li>
+                    </ul>
+
+                    <h6>2. User Eligibility</h6>
+                    <p>To use this website and make transactions, you must:</p>
+                    <ul>
+                        <li>Be at least 18 years old or have parental/guardian consent if under 18.</li>
+                        <li>Provide accurate and complete information during the registration and transaction processes.</li>
+                    </ul>
+
+                    <h6>3. Ticket Purchase and Payment</h6>
+                    <ul>
+                        <li>All ticket prices are stated in Indonesian Rupiah (IDR) and include applicable taxes unless otherwise specified.</li>
+                        <li>Payment must be completed via the available payment methods listed on the website (e.g., bank transfer, e-wallets, etc.).</li>
+                        <li>Tickets are non-refundable, except in cases where the event is canceled by the organizer.</li>
+                        <li>Confirmation of purchase will be sent via email or SMS upon successful payment.</li>
+                    </ul>
+
+                    <h6>4. Event Policies</h6>
+                    <ul>
+                        <li>The purchased ticket grants the user access to the specified YBM2025 event.</li>
+                        <li>Tickets are non-transferable without prior written consent from the organizer.</li>
+                        <li>Users must comply with all event regulations and instructions provided by the organizer.</li>
+                        <li>The organizer reserves the right to refuse entry to individuals who violate event rules or present forged tickets.</li>
+                    </ul>
+
+                    <h6>5. Cancellations and Changes</h6>
+                    <ul>
+                        <li>The organizer reserves the right to cancel, postpone, or modify the event details (e.g., date, time, venue) due to unforeseen circumstances.</li>
+                        <li>In case of event cancellation, a refund process will be communicated through official channels.</li>
+                        <li>Users are responsible for staying informed about event updates through the website or official communications from the organizer.</li>
+                    </ul>
+
+                    <h6>6. User Responsibilities</h6>
+                    <ul>
+                        <li>Users must ensure the security of their account credentials and are responsible for all activities conducted under their account.</li>
+                        <li>Users are prohibited from:</li>
+                        <ul>
+                            <li>Engaging in fraudulent activities (e.g., providing false payment information).</li>
+                            <li>Attempting to disrupt the functionality of the website.</li>
+                        </ul>
+                    </ul>
+
+                    <h6>7. Limitation of Liability</h6>
+                    <p>The organizer is not responsible for any technical issues, such as internet connectivity problems or payment gateway malfunctions, that may affect the transaction process. The organizer's liability is limited to the value of the ticket purchased by the user.</p>
+
+                    <h6>8. Privacy Policy</h6>
+                    <p>By using this website, you agree to the collection and use of your personal data in accordance with our Privacy Policy. Your data will be used solely for purposes related to ticket transactions and event updates.</p>
+
+                    <h6>9. Governing Law</h6>
+                    <p>These Terms are governed by the laws of the Republic of Indonesia. Any disputes arising from the use of this website or participation in YBM2025 will be resolved in accordance with Indonesian law.</p>
+
+                    <h6>10. Contact Us</h6>
+                    <p>If you have any questions or concerns regarding these Terms or the event, please contact us at:</p>
+                    <ul>
+                        <li>Email: <a href="mailto:formakara2025@gmail.com">formakara2025@gmail.com</a></li>
+                        <li>Phone: 087821295403</li>
+                    </ul>
+
+                    <p>By completing a transaction on this website, you acknowledge that you have read, understood, and agreed to these Terms and Conditions. Thank you for supporting Formakara UI - YBM2025. We look forward to your participation!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to initialize nominal value and fields on page load
+        function initializeForm() {
+            const jenisOrderSelect = document.getElementById('jenisOrder');
+            const selectedOption = jenisOrderSelect.options[jenisOrderSelect.selectedIndex];
+            const price = selectedOption.getAttribute('data-price');
+            const isBundle = selectedOption.value.includes('bundle');
+    
+            // Set initial nominal value
+            document.getElementById('nominal').value = price;
+    
+            // Show or hide additional fields based on the initial selection
+            document.getElementById('nama2Container').classList.toggle('d-none', !isBundle);
+            document.getElementById('email2Container').classList.toggle('d-none', !isBundle);
+            document.getElementById('noHp2Container').classList.toggle('d-none', !isBundle);
+            document.getElementById('asalSekolah2Container').classList.toggle('d-none', !isBundle);
+        }
+    
+        // Event listener for 'jenisOrder' change
+        document.getElementById('jenisOrder').addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const price = selectedOption.getAttribute('data-price');
+            const isBundle = selectedOption.value.includes('bundle');
+    
+            // Update nominal field
+            document.getElementById('nominal').value = price;
+    
+            // Show or hide additional fields
+            document.getElementById('nama2Container').classList.toggle('d-none', !isBundle);
+            document.getElementById('email2Container').classList.toggle('d-none', !isBundle);
+            document.getElementById('noHp2Container').classList.toggle('d-none', !isBundle);
+            document.getElementById('asalSekolah2Container').classList.toggle('d-none', !isBundle);
+        });
+    
+        // Initialize form on page load
+        window.addEventListener('load', initializeForm);
+
+        function validateForm(event) {
+            var termsCheckbox = document.getElementById("termsCheckbox");
+            var termsError = document.getElementById("termsError");
+            
+            // Check if terms checkbox is checked
+            if (!termsCheckbox.checked) {
+                // Prevent form submission
+                event.preventDefault();
+                termsError.style.display = "block"; // Show error message
+                return false; // Prevent form submission
+            } else {
+                termsError.style.display = "none"; // Hide error message
+                return true; // Allow form submission
+            }
+        }
+    </script>    
+</body>
+</html>
