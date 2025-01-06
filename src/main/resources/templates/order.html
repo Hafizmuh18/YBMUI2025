@@ -8,10 +8,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Merienda:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Bootstrap JS dan dependensi -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
     <style>
         body {
             background-color: #011f4b; /* Deep ocean blue */
@@ -137,17 +142,18 @@
         }
 
         /* Modal background */
-        .modal {
-            display: none; /* Sembunyikan modal secara default */
+        .custom-modal {
+            display: none;
             position: fixed;
-            z-index: 1; /* Di atas konten lainnya */
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4); /* Latar belakang semi-transparan */
+            background-color: rgba(0, 0, 0, 0.4);
         }
+
 
         /* Modal content */
         .modal-content {
@@ -232,7 +238,7 @@
                 Create Order
             </div>
             <div class="card-body">
-                <form th:action="@{/order}" th:object="${orderDTO}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate onsubmit="return validateForm(event)">                    <!-- Jenis Order -->
+                <form th:action="@{/order}" th:object="${orderDTO}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate onsubmit="return validateForm(event, this)">
                     <div class="mb-3">
                         <label for="jenisOrder" class="form-label">Jenis Order:</label>
                         <select id="jenisOrder" class="form-select" th:field="*{jenisOrder}" required>
@@ -312,19 +318,19 @@
                     </div>
 
                     <!-- Modal untuk Menampilkan QR Pembayaran -->
-                    <div id="qrisModal" class="modal" style="display: none;">
+                    <!-- Custom QRIS Modal -->
+                    <div id="qrisModal" class="custom-modal">
                         <div class="modal-content">
                             <span class="close-btn" id="closeModal">&times;</span>
-                            <!-- Increased size of QR image -->
-                            <img src="/file/qris_qr.jpg" alt="QR Pembayaran" class="img-fluid" style="max-width: 500px; max-height: 500px;"/>
+                            <h5>QR Pembayaran</h5>
+                            <img src="/file/new_qr.png" alt="QR Pembayaran" class="img-fluid" style="max-width: 100%; height: auto;">
                         </div>
                     </div>
-
 
                     <!-- Opsi Download Gambar QR -->
                     <div class="mb-3">
                         <label for="downloadQR" class="form-label">Unduh QR Pembayaran:</label>
-                        <a href="/file/qris_qr.jpg" download="qris_qr.jpg" class="btn btn-success">Unduh QR Pembayaran</a>
+                        <a href="/file/new_qr.png" download="new_qr.png" class="btn btn-success">Unduh QR Pembayaran</a>
                     </div>
 
                     <!-- Opsi Pembayaran VA Blu by BCA -->
@@ -450,8 +456,7 @@
     </div>
 
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         // Function to initialize nominal value and fields on page load
         function initializeForm() {
@@ -489,20 +494,24 @@
         // Initialize form on page load
         window.addEventListener('load', initializeForm);
 
-        function validateForm(event) {
-            var termsCheckbox = document.getElementById("termsCheckbox");
-            var termsError = document.getElementById("termsError");
-            
-            // Check if terms checkbox is checked
-            if (!termsCheckbox.checked) {
-                // Prevent form submission
-                event.preventDefault();
-                termsError.style.display = "block"; // Show error message
-                return false; // Prevent form submission
-            } else {
-                termsError.style.display = "none"; // Hide error message
-                return true; // Allow form submission
+        function validateForm(event, form) {
+            // Prevent form submission
+            event.preventDefault();
+
+            // Check if the form is valid
+            if (form.checkValidity() === false) {
+                event.stopPropagation();  // Prevent the form from submitting if not valid
+                form.classList.add('was-validated');  // Show validation feedback
+                return false;
             }
+
+            // Disable the submit button to prevent double submission
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+
+            // If the form is valid, submit the form
+            form.submit();
+            return true;
         }
 
         // Show QR code modal when the link is clicked

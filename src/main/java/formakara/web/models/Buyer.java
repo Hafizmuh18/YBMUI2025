@@ -30,6 +30,7 @@ public class Buyer {
     @Column(name = "nama", nullable = false)
     private String nama;
 
+    @NotNull
     @Column(name = "email", nullable = true)
     private String email;
 

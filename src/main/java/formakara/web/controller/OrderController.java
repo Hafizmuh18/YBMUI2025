@@ -64,17 +64,22 @@ public class OrderController {
         System.out.println("\n\n\n");
         System.out.println(orderDTO.getAsalSekolah1());
         System.out.println(orderDTO.getJenisOrder());
+        System.out.println(orderDTO.getEmail1());
         for(Buyer buyer : buyerDb.findAll()){
-            if(buyer.getEmail().equalsIgnoreCase(orderDTO.getEmail1())){
+            System.out.println("\n\n\n");
+            System.out.println("buyer :"+buyer.getEmail());
+            System.out.println("\n\n\n");
+            System.out.println("order:"+orderDTO.getEmail1());
+            if(orderDTO.getEmail1()!=null && buyer.getEmail().equalsIgnoreCase(orderDTO.getEmail1())){
                 invalid = true;
                 error = "Email "+orderDTO.getEmail1()+" sudah terdaftar";
-            }else if(buyer.getNoHp().equalsIgnoreCase(orderDTO.getNoHp1())){
+            }else if(orderDTO.getNoHp1()!=null&&buyer.getNoHp().equalsIgnoreCase(orderDTO.getNoHp1())){
                 invalid = true;
                 error = "No HP "+orderDTO.getNoHp1()+" sudah terdaftar";
-            }else if(buyer.getEmail().equalsIgnoreCase(orderDTO.getEmail2())){
+            }else if(orderDTO.getEmail2()!=null&&buyer.getEmail().equalsIgnoreCase(orderDTO.getEmail2())){
                 invalid = true;
-                error = "Email "+orderDTO.getEmail2()+" sudah terdaftar";
-            }else if(buyer.getNoHp().equalsIgnoreCase(orderDTO.getNoHp2())){
+                error = "Email 2"+orderDTO.getEmail2()+" sudah terdaftar";
+            }else if(orderDTO.getNoHp2()!=null&&buyer.getNoHp().equalsIgnoreCase(orderDTO.getNoHp2())){
                 invalid = true;
                 error = "No HP "+orderDTO.getNoHp2()+" sudah terdaftar";
             }
