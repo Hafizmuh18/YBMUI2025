@@ -42,7 +42,7 @@ public class OrderController {
     @Autowired
     TiketToDb tiketToDb;
     
-    @GetMapping("/")
+    @GetMapping("/order")
     public String orderForm(Model model){
         RequestCreateOrderDTO orderDTO = new RequestCreateOrderDTO();
         Map<String, Integer> mapHarga = new HashMap<>();
