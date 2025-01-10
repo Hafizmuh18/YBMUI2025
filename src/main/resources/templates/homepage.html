@@ -37,7 +37,7 @@
         .landscape-image {
             width: 100%;
             height: 50vh;
-            background: url('/file/landscape_ui_new.jpg') center/cover no-repeat, linear-gradient(to bottom, cyan, #004d80);
+            background: url('/file/SEMINAR.PNG') center/contain no-repeat, linear-gradient(to bottom, cyan, #004d80);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -83,6 +83,19 @@
             font-family: 'Rubik Bubbles', sans-serif;
             font-size: 28px;
             margin-bottom: 20px;
+        }
+
+        .event-details {
+            overflow: hidden; /* Ensure the content doesn't overflow */
+            margin-bottom: 15px; /* Add some margin for spacing */
+        }
+
+        /* Adjust image styling to fit correctly */
+        .event-image {
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 12px;
+            object-fit: cover; /* Ensures the image fills its container */
         }
     </style>
 </head>
@@ -149,7 +162,7 @@
         <h2>Forum Mahasiswa Kalimantan Barat Universitas Indonesia (Formakara UI)</h2>
         <p>Merupakan organisasi perkumpulan mahasiswa Universitas Indonesia yang berasal dari Provinsi Kalimantan Barat dengan menerapkan asas kekeluargaan. Organisasi ini memiliki berbagai kegiatan internal maupun eksternal. Seperti Roadshow Pengenalan Kampus, upgrading, team building dan kegiatan sosial.</p>
     </div>
-    
+
     <!-- New Card for YBM UI -->
     <div class="container detail-section">
         <h2>Yok Budak Masok UI (YBM UI)</h2>
@@ -167,13 +180,11 @@
                     </div>
                 </div>
                 <div class="col-md-3 d-flex justify-content-end">
-                    <img src="/file/ybmui2025.png" alt="YBM UI Event Image" style="max-width: 100%; max-height: 300px; height: auto; border-radius: 12px; object-fit: cover;">
+                    <img src="/file/ybmui2025.png" alt="YBM UI Event Image" class="event-image">
                 </div>
             </div>
         </div>
     </div>
-    
-    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
