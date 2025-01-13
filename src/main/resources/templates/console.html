@@ -90,6 +90,16 @@
             <input type="text" class="form-control" id="searchInput" placeholder="Search by Name, Email, or No HP" oninput="filterOrders()">
             <button class="btn btn-primary mt-2" onclick="filterOrders()">Search</button>
         </div>
+        <div>
+            <div class="container card-body">
+                <p><strong>Jumlah Tiket TO : </strong><span th:text="${tiketTo}"></span></p>
+            </div>
+        </div>
+        <div>
+            <div class="container card-body">
+                <p><strong>Jumlah Tiket Seminar : </strong><span th:text="${tiketSeminar}"></span></p>
+            </div>
+        </div>
 
         <!-- Orders Loop -->
         <div th:each="order : ${listOrder}" class="order-card">
@@ -210,7 +220,7 @@
 
         <!-- Footer -->
         <footer>
-            <p>All rights reserved - PT Anawheels</p>
+            <p>All rights reserved - Formakara</p>
         </footer>
     </div>
 

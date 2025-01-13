@@ -23,6 +23,7 @@ import formakara.web.dto.response.ResponseTiketTo;
 import formakara.web.models.Buyer;
 import formakara.web.models.Order;
 import formakara.web.repository.BuyerDb;
+import formakara.web.repository.TiketSeminarDb;
 import formakara.web.repository.TiketToDb;
 import formakara.web.service.EmailService;
 import formakara.web.service.OrderService;
@@ -41,6 +42,9 @@ public class OrderController {
 
     @Autowired
     TiketToDb tiketToDb;
+
+    @Autowired
+    TiketSeminarDb tiketSeminarDb;
     
     @GetMapping("/order")
     public String orderForm(Model model){
@@ -145,7 +149,11 @@ public class OrderController {
     @GetMapping("/admin-console")
     public String adminConsole(@ModelAttribute("isAdmin") Boolean isAdmin, Model model) {
         if (isAdmin != null && isAdmin) {
+            int totalTo = tiketToDb.findAll().size();
+            int totalSeminar = tiketSeminarDb.findAll().size();
             ArrayList<ResponseOrderDTO> listOrder = orderService.findAllDto();
+            model.addAttribute("tiketTo", totalTo);
+            model.addAttribute("tiketSeminar", totalSeminar);
             model.addAttribute("listOrder", listOrder);
             return "console";
         }

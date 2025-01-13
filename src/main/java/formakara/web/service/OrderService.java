@@ -55,7 +55,7 @@ public class OrderService {
 
                 Buyer buyer2 = buyerService.findByNoHp(requestDTO.getNoHp2());
                 if(buyer2 == null){
-                    buyer2 = buyerService.createBuyer(requestDTO.getNama1(), requestDTO.getEmail1(), requestDTO.getNoHp1(), requestDTO.getAsalSekolah2());
+                    buyer2 = buyerService.createBuyer(requestDTO.getNama2(), requestDTO.getEmail2(), requestDTO.getNoHp2(), requestDTO.getAsalSekolah2());
                 }
 
                 responseDTO.setEmail1(buyer1.getEmail());
